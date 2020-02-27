@@ -1,4 +1,4 @@
-import os 
+import os, sys
 import pandas
 from os.path import isfile, join
 from pathlib import Path
@@ -7,6 +7,10 @@ import pandas as pd
 import numpy as  np
 import csv 
 import cv2
+from keras.preprocessing.image import *
+from src.IMGAnalyzer import IMGAnalyzer
+
+
 
 class DSBuilder():
     
@@ -43,19 +47,26 @@ class DSBuilder():
                         
                         if dir.endswith("bmp"):
                             for i in range(7):
-                                
+                               
                                 proband, filename = files[i].split("-")
-                                image = Image.open(Path(dir, proband+"-"+filename))
+                                image_path = Path(dir, proband+"-"+filename)
+                                image = Image.open(image_path)
                                 image_nump = np.array(image)
                                 
+                                
+                                # image = load_img(Path(dir, proband+"-"+filename))
+                                # image_nump = img_to_array(image)
+
                                 # create label vector
                                 label = np.zeros(7)
                                 label[int(filename.split("_")[0])] = 1
                                 
-    	                        # convert image to one channel -> grey color no rgb(3 channels) -> new shape (480, 640)
-                                image_nump = cv2.cvtColor(image_nump, cv2.COLOR_BGR2GRAY)
                                 
-                                self.dataset.append((files[i].split(".")[0], image_nump, label))
+    	                        
+                                # convert image to one channel -> grey color no rgb(3 channels) -> new shape (480, 640)
+                                # image_nump = cv2.cvtColor(image_nump, cv2.COLOR_BGR2GRAY)
+                                
+                                self.dataset.append((files[i].split(".")[0], image_nump/255.0, label))
                                 
                                 # create a sample 
                                 # concatenated with labels -> last 7 indicies are the 7 classes(expressions)
