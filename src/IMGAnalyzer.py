@@ -24,7 +24,6 @@ class IMGAnalyzer():
         
         faces = classifier.detectMultiScale(grayscale, 1.3, 5)
         
-        
         return faces
 
     def hasFaces(self):
@@ -40,11 +39,9 @@ class IMGAnalyzer():
         self.image.show()
     
     def crop(self, faces):
-
-        if (len(faces)) > 1 :
-            self.drawRectangle(faces)
         # assert len(faces)== 1, f"more than one face was detected "
-        x, y, w ,h = faces[0]
-        image = np.asarray(self.image)[y:y+h, x:x+w] 
-        return Image.fromarray(image)
+        x, y, w ,h = (212, 167, 218,218)
+        image_numpy = np.asarray(self.image)[y:y+h, x:x+w] 
+        
+        return image_numpy
         

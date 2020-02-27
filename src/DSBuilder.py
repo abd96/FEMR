@@ -11,7 +11,7 @@ from keras.preprocessing.image import *
 from src.IMGAnalyzer import IMGAnalyzer
 
 
-
+np.set_printoptions(threshold=sys.maxsize)
 class DSBuilder():
     
     def __init__(self):
@@ -52,6 +52,18 @@ class DSBuilder():
                                 image_path = Path(dir, proband+"-"+filename)
                                 image = Image.open(image_path)
                                 image_nump = np.array(image)
+                                
+                                # analyzer for cropping images see -> IMGAnalyzer.py
+                                analyzer = IMGAnalyzer(image_path)
+                                image_nump = analyzer.crop(analyzer.getFaces())
+                                
+
+                                # image_nump = cv2.resize(image_nump, (128, 128))
+                                # Image.fromarray(image_nump).show()
+                                # print(image_nump.shape)
+
+                                # normalize image data 
+                                image_nump = image_nump  / 255.0
                                 
                                 
                                 # image = load_img(Path(dir, proband+"-"+filename))
