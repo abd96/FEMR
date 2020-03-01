@@ -9,7 +9,7 @@ import csv
 import cv2
 from keras.preprocessing.image import *
 from src.IMGAnalyzer import IMGAnalyzer
-
+from tqdm import tqdm 
 
 np.set_printoptions(threshold=sys.maxsize)
 class DSBuilder():
@@ -17,12 +17,12 @@ class DSBuilder():
     def __init__(self):
         self.path = Path(os.getcwd(), 'FDB', 'facesdb')
         self.labelMap = {
-            0 : 'normal',
+            # 0 : 'normal',
             1 : 'happy',
             2 : 'sad',
-            3 : 'surprised',
+            # 3 : 'surprised',
             4 : 'angry',
-            5 : 'disgust', 
+            # 5 : 'disgust', 
             6 : 'fear'
         }
         # pandas dataframe to find the labeld data to -> used to traing model
@@ -36,9 +36,10 @@ class DSBuilder():
         # modeify if you need to train on another dataset   
         # for every subdirectory need to get subdirs that has images 
         
-        for subdir, dir, files in os.walk(self.path):
+        for subdir, dir, files in tqdm(os.walk(self.path)):
+            
             # len =9 -> (for my dataset) where the images are saved 
-            if len(subdir.split("\\")) == 9:
+            if len(subdir.split("/")) == 10:
                 # iterate over files and choose the 6 files 
                 # that corresponds to the expression defined
                 # above in labelMap
@@ -46,37 +47,51 @@ class DSBuilder():
                     if files:
                         
                         if dir.endswith("bmp"):
-                            for i in range(7):
+                            
+                            for i in [1,2, 4,6]:
                                
                                 proband, filename = files[i].split("-")
+                                
                                 image_path = Path(dir, proband+"-"+filename)
-                                image = Image.open(image_path)
-                                image_nump = np.array(image)
+                                # image = Image.open(image_path)
+                                # image_nump = np.array(image)
                                 
                                 # analyzer for cropping images see -> IMGAnalyzer.py
                                 analyzer = IMGAnalyzer(image_path)
-                                image_nump = analyzer.crop(analyzer.getFaces())
                                 
-
-                                # image_nump = cv2.resize(image_nump, (128, 128))
+                                
+                                image_nump = analyzer.crop(analyzer.getFaces()[0])
+                                
                                 # Image.fromarray(image_nump).show()
+                                image_nump = cv2.resize(image_nump, (128, 128))
+                               
                                 # print(image_nump.shape)
 
                                 # normalize image data 
-                                image_nump = image_nump  / 255.0
+                                
                                 
                                 
                                 # image = load_img(Path(dir, proband+"-"+filename))
                                 # image_nump = img_to_array(image)
-
+                                
+                                
+                                # img = Image.fromarray(image_nump)
+                                # img.show()
+                                
                                 # create label vector
+                                #
                                 label = np.zeros(7)
                                 label[int(filename.split("_")[0])] = 1
                                 
+                                label = [label[1] , label[2], label[4], label[6]]
                                 
-    	                        
+                                # print(image_nump)
+                                
                                 # convert image to one channel -> grey color no rgb(3 channels) -> new shape (480, 640)
                                 # image_nump = cv2.cvtColor(image_nump, cv2.COLOR_BGR2GRAY)
+                                
+                                # normalize data 
+                                
                                 
                                 self.dataset.append((files[i].split(".")[0], image_nump/255.0, label))
                                 
