@@ -61,7 +61,7 @@ class IMGAnalyzer():
         if crop:
             self.image = Image.fromarray(self.crop(self.getFaces()[0]))
         detector = dlib.get_frontal_face_detector()
-        predictor = dlib.shape_predictor(os.path.join('model', 'shape_predictor_68_face_landmarks.dat'))
+        predictor = dlib.shape_predictor(os.path.join('models', 'shape_predictor_68_face_landmarks.dat'))
         gray_image = cv2.cvtColor(np.asarray(self.image), cv2.COLOR_BGR2GRAY)
         faces = detector(gray_image, 1)
         nump_image = np.asarray(self.image)
@@ -87,7 +87,7 @@ class IMGAnalyzer():
         if crop:
             self.image = Image.fromarray(self.crop(self.getFaces()[0]))
         detector = dlib.get_frontal_face_detector()
-        predictor = dlib.shape_predictor(os.path.join('model', 'shape_predictor_68_face_landmarks.dat'))
+        predictor = dlib.shape_predictor(os.path.join('models', 'shape_predictor_68_face_landmarks.dat'))
         gray_image = cv2.cvtColor(np.asarray(self.image), cv2.COLOR_BGR2GRAY)
         faces = detector(gray_image, 1)
         face = faces[0]
