@@ -12,8 +12,8 @@ import numpy as np
 import pandas as pd
 import random 
 import traceback 
-
-
+import  tensorflow as tf
+from keras import callbacks
 def generator(batch_size,from_list_x,from_list_y):
 
     assert len(from_list_x) == len(from_list_y)
@@ -67,7 +67,7 @@ def train(path):
     num_features = 64 
     num_labels = 7
     batch_size = 64
-    epochs = 100
+    epochs = 80
 
 
     # categorize targets 
@@ -80,6 +80,7 @@ def train(path):
     
     model.add(Conv2D(num_features, (3, 3), activation='relu', input_shape=(width, height, 1)))
     model.add(Conv2D(num_features, (3, 3), activation='relu'))
+    model.add(BatchNormalization())
     model.add(MaxPooling2D(pool_size=(2,2), strides = (2,2)))
     model.add(Dropout(0.5))
 
@@ -92,12 +93,15 @@ def train(path):
 
     model.add(Conv2D(2*num_features,(3, 3), activation='relu'))
     model.add(BatchNormalization())
-    model.add(Conv2D(2*num_features, (3, 3), activation='relu'))
-    model.add(BatchNormalization())
+    
+    
     model.add(MaxPooling2D(pool_size=(2,2), strides = (2,2)))
+    model.add(Dropout(0.5))
+
+  
 
     model.add(Flatten())
-    model.add(Dense(2*2*2*2*num_features, activation="softmax"))
+    model.add(Dense(16*num_features, activation="softmax"))
     model.add(Dropout(0.2))
     model.add(Dense(num_labels, activation="softmax"))
     
@@ -114,15 +118,19 @@ def train(path):
     # verbose=1,
     # shuffle = True)
     
+    model_filename = "saved-model-{epoch:02d}-{val_acc:.2f}.hdf5"
+    checkpoint_path = os.path.join(os.getcwd(), "checkpoints", model_filename )
+    cp_callback = callbacks.ModelCheckpoint(filepath=checkpoint_path,
+                                                 verbose=1,
+                                                 monitor='val_acc')
+
+
     model.fit(X_train, Y_train, validation_data=(X_test, Y_test),batch_size=batch_size, 
     epochs=epochs,
     verbose=1,
     shuffle=True)
 
-    model_json = model.to_json()
-    with open("model.json", "w") as file:
-        file.write(model.json)
-    model.save_weights("model_weights.h5") 
+    model.save('my_model.h5')
 
 
 def main():
