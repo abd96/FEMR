@@ -67,3 +67,22 @@ This part is not yet implemented.
 #### Using Spotify's Music Features 
 TODO 
 
+## Running and training model 
+This instructions only work for Approach 2. For approach 1 you need to request data from the link 
+above.  
+1. Create virtual environment : `python3 -m pip install --user virtualenv`
+2. Activate environment : `source envo/bin/activate`
+3. Install requirements : `pip3 install -r requirements.txt`
+4. Create a new directory beside `train_model.py` and name it `train_data`
+5. Download fer2013 data from [here](https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data?select=fer2013.tar.gz) and place the csv file in `train_data` you just created.
+6. run training with : `python3 train_model.py` 
+
+Weights for a pretrained model can be found in `models/` directory but no loading method for loading 
+weights has been implemented yet.
+
+
+### Notes 
+If you have good ideas on improving the model and using spotify's music features for the second part of this project 
+please contact me. I would love to have some collaborators for FEMR. 
+
+
