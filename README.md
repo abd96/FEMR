@@ -59,7 +59,7 @@ _________________________________________________________________
 ```
 
 After 80 Epochs the model reached an accuracy of 0.66, a great improvement compared to approach 1. 
-But still not perfect.
+But still not optimal.
 
 
 ## Music Recommendation 
