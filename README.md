@@ -70,8 +70,9 @@ TODO
 ## Running and training model 
 This instructions only work for Approach 2. For approach 1 you need to request data from the link 
 above.  
-1. Create virtual environment : `python3 -m pip install --user virtualenv`
-2. Activate environment : `source envo/bin/activate`
+1. Install python virtaulenv : `python3 -m pip install --user virtaulenvr`
+1. Create virtual environment : `python3 -m venv <ENVNAME>`
+2. Activate environment : `source <ENVNAME>/bin/activate`
 3. Install requirements : `pip3 install -r requirements.txt`
 4. Create a new directory beside `train_model.py` and name it `train_data`
 5. Download fer2013 data from [here](https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data?select=fer2013.tar.gz) and place the csv file in `train_data` you just created.
