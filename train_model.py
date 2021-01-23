@@ -6,7 +6,6 @@ from keras.layers import Conv2D, Flatten
 from keras.layers import MaxPooling2D, Dropout, BatchNormalization
 from keras import optimizers
 from keras.utils import np_utils
-from src.FeatureExtractor import  FeatureExtractor
 import sys, os
 import numpy as np
 import pandas as pd
@@ -134,8 +133,8 @@ def train(path):
 
 
 def main():
-
-    path_to_trainset =  os.path.join(os.getcwd(), 'FEXDB', 'fer2013', 'fer2013', 'fer2013.csv')
+    
+    path_to_trainset =  os.path.join(os.getcwd(), 'train_data', 'fer2013.csv')
     train(path_to_trainset) 
 
 if __name__ == '__main__':
